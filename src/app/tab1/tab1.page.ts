@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { firestore } from 'firebase';
 import { Router } from '@angular/router';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-tab1',
@@ -33,13 +33,21 @@ export class Tab1Page {
     }
   }
 
+  getMonth() {
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    const date = new Date(this.getEnteredDate());
+    const month = date.getDate();
+    return months[month - 1];
+  }
+
   onAdd() {
     const spend = {
       date: this.getEnteredDate(),
       amount: this.cash
     };
     if (this.cash) {
-      firestore().collection('spend').add(spend);
+      let newKey = firebase.database().ref('spend').child(this.getMonth()).push().key;
+      firebase.database().ref('spend').child(this.getMonth()).child(newKey).set(spend);
     } else {
       return alert('Please enter value');
     }
