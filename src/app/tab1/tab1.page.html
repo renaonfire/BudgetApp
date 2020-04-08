@@ -20,7 +20,7 @@
         <ion-item>
           <ion-icon name="calendar-outline"></ion-icon>
           <ion-label> Select Date </ion-label>
-          <ion-datetime [(ngModel)]="enteredDate" displayFormat="MM DD YY" [placeholder]="getDate()"></ion-datetime>
+          <ion-datetime pickerFormat="DD MMMM YYYY" displayFormat="DD MMMM YYYY" [(ngModel)]="enteredDate" [placeholder]="getTodaysDate()"></ion-datetime>
         </ion-item>
       </ion-row>
       <ion-row>

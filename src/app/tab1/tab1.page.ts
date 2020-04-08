@@ -1,5 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { firestore } from 'firebase';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab1',
@@ -13,39 +14,35 @@ export class Tab1Page {
   @ViewChild('cash', {read: '', static: false}) cash;
   @ViewChild('enteredDate', {read: '', static: false}) enteredDate;
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
-  getDate(): string {
-    const day = this.date.getDate();
-    const month = this.date.getMonth() + 1;
-    const year = this.date.getFullYear();
-    return `${day}/${month}/${year}`;
+  getTodaysDate(): string {
+    const date = new Date();
+    const newDate = new Intl.DateTimeFormat('en-GB').format(date);
+    return newDate;
   }
 
   getEnteredDate() {
     if (this.enteredDate) {
-      return this.enteredDate;
+    const date = new Date(this.enteredDate);
+    const newDate = new Intl.DateTimeFormat('en-GB').format(date);
+      return newDate;
     } else {
-      return this.getDate();
+      return this.getTodaysDate();
     }
   }
 
   onAdd() {
+    const spend = {
+      date: this.getEnteredDate(),
+      amount: this.cash
+    };
     if (this.cash) {
-      this.writeData(this.getEnteredDate(), this.cash);
+      firestore().collection('spend').add(spend);
     } else {
       return alert('Please enter value');
     }
+    this.router.navigate(['tabs/tab2']);
   }
-
-  writeData(date, value) {
-    const spend = {
-      amount: value
-    };
-    firestore().collection('date' + date).add(spend);
-  }
-
-
-
 }
