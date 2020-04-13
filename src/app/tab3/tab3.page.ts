@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { ModalPage } from '../modal/modal.page';
 
 @Component({
   selector: 'app-tab3',
@@ -7,6 +9,18 @@ import { Component } from '@angular/core';
 })
 export class Tab3Page {
 
-  constructor() {}
+  budget: number = 0;
+
+  constructor(public modalCtrl: ModalController) {}
+
+  async budgetClicked() {
+    const modal = await this.modalCtrl.create({
+      component: ModalPage,
+      componentProps: {
+        'label': 'Budget'
+      }
+    });
+    return await modal.present();
+  }
 
 }

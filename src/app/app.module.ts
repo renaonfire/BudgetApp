@@ -12,13 +12,15 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import firebaseConfig from './firebase';
 import * as firebase from 'firebase';
+import { ModalPage } from './modal/modal.page';
+import { FormsModule } from '@angular/forms';
 
 firebase.initializeApp(firebaseConfig);
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
+  declarations: [AppComponent, ModalPage],
+  entryComponents: [ModalPage],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, FormsModule],
   providers: [
     StatusBar,
     SplashScreen,

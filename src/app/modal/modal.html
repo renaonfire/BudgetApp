@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-title>
+            Budget
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">Budget</ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <ion-grid>
+        <ion-row>
+            <ion-label>{{ label }}</ion-label>
+            <ion-item>
+                <ion-icon name="cash-outline"></ion-icon>
+                <ion-input [(ngModel)]="value" required={{true}} type="number" inputmode="numeric" color="tertiary" clearInput={{true}}></ion-input>
+            </ion-item>
+        </ion-row>
+        <ion-row>
+            <ion-button (click)="dismiss()" expand="block" color="tertiary">Save</ion-button>
+        </ion-row>
+    </ion-grid>
+</ion-content>
