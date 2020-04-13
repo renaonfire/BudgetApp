@@ -1,6 +1,4 @@
-ion-content ion-toolbar {
-  --background: translucent;
-}
+
 
 ion-grid {
   width: 100%;
@@ -9,6 +7,10 @@ ion-grid {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-image: url('../../assets/logo.jpg');
+  background-position: center;
+  background-size: 70%;
+  background-repeat: no-repeat;
 
 }
 
@@ -18,4 +20,25 @@ ion-icon {
 
 .title {
   margin-bottom: 5rem;
+}
+
+.row-container {
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 16px;
+  border-radius: 0.5rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 5px;
+
+  ion-datetime, ion-input {
+    width: 60%;
+    text-align: end;
+  }
+
+  ion-icon {
+    font-size: 25px;
+  }
 }

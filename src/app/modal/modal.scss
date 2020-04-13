@@ -1,0 +1,32 @@
+ion-grid {
+    height: 90%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+ion-label {
+    padding: 10px 20px;
+    font-weight: 600;
+}
+
+ion-list  {
+    padding: 2rem;
+}
+
+ion-toolbar {
+    ion-icon {
+        font-size: 25px;
+        padding-right: 2rem;
+    }
+}
+
+
+.list-items {
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    padding: 1rem 0;
+    border-bottom: 1px solid grey;
+}

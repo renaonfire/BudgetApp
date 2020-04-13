@@ -1,15 +1,8 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Settings
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Settings</ion-title>
+      <ion-title size="medium">Settings</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-card (click)="budgetClicked()">
@@ -18,7 +11,7 @@
       <ion-card-title>Current Budget</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      Budget: £{{ budget }}
+      Budget: <span class="value">£{{ budget }}</span>
     </ion-card-content>
   </ion-card>
 </ion-content>

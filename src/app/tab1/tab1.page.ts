@@ -26,28 +26,29 @@ export class Tab1Page {
   getEnteredDate() {
     if (this.enteredDate) {
     const date = new Date(this.enteredDate);
-    const newDate = new Intl.DateTimeFormat('en-GB').format(date);
-      return newDate;
+      return date;
     } else {
-      return this.getTodaysDate();
+      let todaysDate = new Date();
+      return todaysDate;
     }
   }
 
   getMonth() {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     const date = new Date(this.getEnteredDate());
-    const month = date.getDate();
-    return months[month - 1];
+    const month = date.getMonth();
+    return months[month];
   }
 
   onAdd() {
+    let selectedMonth = this.getMonth();
     const spend = {
-      date: this.getEnteredDate(),
+      date:  new Intl.DateTimeFormat('en-GB').format(this.enteredDate),
       amount: this.cash
     };
     if (this.cash) {
-      let newKey = firebase.database().ref('spend').child(this.getMonth()).push().key;
-      firebase.database().ref('spend').child(this.getMonth()).child(newKey).set(spend);
+      let newKey = firebase.database().ref('spend').child(selectedMonth).push().key;
+      firebase.database().ref('spend').child(selectedMonth).child(newKey).set(spend);
     } else {
       return alert('Please enter value');
     }
