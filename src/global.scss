@@ -25,10 +25,6 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-ion-content {
-    background-image: url('../src/assets/logo.jpg');
-}
-
 ion-row {
     width: 100%
 }
@@ -47,4 +43,4 @@ ion-button {
 
 ion-input {
     text-align: right;
-  }
+}
