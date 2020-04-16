@@ -83,8 +83,7 @@ export class ModalPage implements OnInit {
         }
     }
 
-    onDeleteIconClick() {
-        let itemId = event.target.id;
+    onDeleteIconClick(itemId) {
         let currentMonth = this.getMonth();
         firebase.database().ref('spend').child(currentMonth).child(itemId).remove();
         location.reload();
