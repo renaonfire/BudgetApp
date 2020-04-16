@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import * as firebase from 'firebase';
+import { ISpend } from '../interfaces/spend.interface';
 
 @Component({
     selector: 'modal-page',
@@ -8,6 +9,8 @@ import * as firebase from 'firebase';
     styleUrls: ['modal.scss']
 })
 export class ModalPage implements OnInit {
+    spend: ISpend[];
+
     @Input() grid?: boolean;
     @Input() list?: boolean
     @Input() label?: string;
@@ -15,9 +18,8 @@ export class ModalPage implements OnInit {
     @ViewChild('value', {read: '', static: false}) value;
     @ViewChild('retrievedItem', {read: '', static: false}) retrievedItem;
 
-    spend = [];
-
     constructor(public modalCtrl: ModalController) {
+        this.spend = [];
     }   
 
     getMonth() {
@@ -82,7 +84,8 @@ export class ModalPage implements OnInit {
     }
 
     onDeleteIconClick() {
-        let itemId = event.target.id;
+        let clickedIcon = event.target;
+        let itemId = clickedIcon.id;
         let currentMonth = this.getMonth()
         firebase.database().ref('spend').child(currentMonth).child(itemId).remove();
         location.reload();
