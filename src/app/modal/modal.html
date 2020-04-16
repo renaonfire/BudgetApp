@@ -29,19 +29,19 @@
         <div class="title-content">
             <ion-icon color="tertiary" name="calendar-outline"></ion-icon>
             <ion-label> Select Month </ion-label>
-            <ion-datetime [(ngModel)]="selectedMonth" slot="end" pickerFormat="MMMM YYYY" displayFormat="MMMM YYYY" [placeholder]="getMonth()"></ion-datetime>
+            <ion-datetime pickerFormat="MMMM YYYY" displayFormat="MMMM YYYY" [placeholder]="getMonth()"></ion-datetime>
         </div>
         <ion-item-sliding *ngFor="let sp of spend">
             <ion-item id="list-item">
-                    <ion-label> {{ sp.date }}</ion-label>
-                    <span class="value">£{{ sp.amount }}</span>
+                    <ion-label> {{ sp.data.date }}</ion-label>
+                    <span class="value">£{{ sp.data.amount }}</span>
             </ion-item>
             <ion-item-options side="end">
                 <ion-item-option color="danger">
-                <ion-icon slot="icon-only" name="trash"></ion-icon>
+                <ion-icon id={{sp.id}} (click)="onDeleteIconClick()" slot="icon-only" name="trash"></ion-icon>
                 </ion-item-option>
                 <ion-item-option>
-                <ion-icon slot="icon-only" name="create"></ion-icon>
+                <ion-icon (click)="onEditIconClick()" slot="icon-only" name="create"></ion-icon>
                 </ion-item-option>
             </ion-item-options>
         </ion-item-sliding>

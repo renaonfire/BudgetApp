@@ -75,24 +75,30 @@ export class Tab2Page implements OnInit{
     });
 }
 
-getBudget() {
-  return new Promise((resolve, reject) => {
-    firebase.database().ref('budget').once('value').then((snapshots) => {
-        if (snapshots.val()) {
-            this.budget = (snapshots.val());
-            resolve([this.budget, this.remainder]);
-        } else {
-            this.budget = 0;
-        }
-    });
-})
-}
+  getBudget() {
+    return new Promise((resolve, reject) => {
+      firebase.database().ref('budget').once('value').then((snapshots) => {
+          if (snapshots.val()) {
+              this.budget = (snapshots.val());
+              resolve([this.budget, this.remainder]);
+          } else {
+              this.budget = 0;
+          }
+      });
+  })
+  }
 
-  ngOnInit() {
-    
+  ionViewWillEnter() {
+    console.log(' view entered');
     this.getSumOfSpend();
     this.getBudget();
-  
+  }
+
+  ngOnInit() {
+      
+    this.getSumOfSpend();
+    this.getBudget();
+    
   }
 
 }

@@ -13,6 +13,7 @@ export class ModalPage implements OnInit {
     @Input() label?: string;
     @Input() title?: string;
     @ViewChild('value', {read: '', static: false}) value;
+    @ViewChild('retrievedItem', {read: '', static: false}) retrievedItem;
 
     spend = [];
 
@@ -44,7 +45,7 @@ export class ModalPage implements OnInit {
         promise.then((values: []) => {
             values.map((id: string) => (
                 firebase.database().ref('spend').child(currentMonth).child(id).once('value').then((snapshots) => {
-                    this.spend.push({amount: (snapshots.val().amount), date: (snapshots.val().date)});
+                    this.spend.push({id: id, data: {amount: (snapshots.val().amount), date: (snapshots.val().date)}});
                     })
                 ));
         });
@@ -78,6 +79,17 @@ export class ModalPage implements OnInit {
         } else {
             return alert('Please enter value');
         }
+    }
+
+    onDeleteIconClick() {
+        let itemId = event.target.id;
+        let currentMonth = this.getMonth()
+        firebase.database().ref('spend').child(currentMonth).child(itemId).remove();
+        location.reload();
+    }
+
+    onEditIconClick() {
+        console.log('edit')
     }
 
     ngOnInit() {
