@@ -84,15 +84,10 @@ export class ModalPage implements OnInit {
     }
 
     onDeleteIconClick() {
-        let clickedIcon = event.target;
-        let itemId = clickedIcon.id;
-        let currentMonth = this.getMonth()
+        let itemId = event.target.id;
+        let currentMonth = this.getMonth();
         firebase.database().ref('spend').child(currentMonth).child(itemId).remove();
         location.reload();
-    }
-
-    onEditIconClick() {
-        console.log('edit')
     }
 
     ngOnInit() {

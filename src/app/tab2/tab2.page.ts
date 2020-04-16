@@ -44,14 +44,14 @@ export class Tab2Page implements OnInit{
     const date = new Date();
     const month = date.getMonth();
     return months[month];
-}
+  }
 
   getSumOfSpend() {
     let results = [];
     let result;
     let value = [];
     let sum;
-    let currentMonth = this.getMonth()
+    let currentMonth = this.getMonth();
     let promise = new Promise((resolve, reject) => {
         firebase.database().ref('spend').child(currentMonth).once('value').then((snapshots) => {
           if (snapshots.val()) {
@@ -89,16 +89,12 @@ export class Tab2Page implements OnInit{
   }
 
   ionViewWillEnter() {
-    console.log(' view entered');
-    this.getSumOfSpend();
-    this.getBudget();
+    this.ngOnInit();
   }
 
   ngOnInit() {
-      
     this.getSumOfSpend();
     this.getBudget();
-    
   }
 
 }
