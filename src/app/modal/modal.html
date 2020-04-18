@@ -1,12 +1,12 @@
-
-
 <ion-content [fullscreen]="true">
-    <ion-header collapse="condense">
-        <ion-toolbar>
-            <ion-title size="medium">{{ title }}</ion-title>
-            <ion-icon (click)="closeModal()" slot="end" name="close-circle"></ion-icon>
-        </ion-toolbar>
-    </ion-header>
+    <ion-nav>
+        <ion-header collapse="condense">
+            <ion-toolbar>
+                <ion-title size="medium">{{ title }}</ion-title>
+                <ion-icon (click)="closeModal()" slot="end" name="close-circle"></ion-icon>
+            </ion-toolbar>
+        </ion-header>
+    </ion-nav>
 
     <ng-template [ngIf]="grid">
         <ion-grid>
@@ -25,11 +25,11 @@
 
 
     <ng-template [ngIf]="list">
-        <div class="title"><ion-label>Summary of Spend for {{ getMonth() }}</ion-label></div>
+        <div class="title"><ion-label>Summary of Spend</ion-label></div>
         <div class="title-content">
             <ion-icon color="tertiary" name="calendar-outline"></ion-icon>
             <ion-label> Select Month </ion-label>
-            <ion-datetime pickerFormat="MMMM YYYY" displayFormat="MMMM YYYY" [placeholder]="getMonth()"></ion-datetime>
+            <ion-datetime (ionChange)="monthChanged(monthValue)" [(ngModel)]="monthValue" pickerFormat="MMMM YYYY" displayFormat="MMMM YYYY" [placeholder]="getCurrentMonth()"></ion-datetime>
         </div>
         <ion-item-sliding *ngFor="let sp of spend">
             <ion-item id="list-item">

@@ -47,7 +47,7 @@ export class Tab3Page implements OnInit {
 }
 
   ionViewWillEnter() {
-    this.getBudget();
+    this.ngOnInit();
   }
   
   ngOnInit() {

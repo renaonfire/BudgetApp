@@ -10,6 +10,7 @@ import { ISpend } from '../interfaces/spend.interface';
 })
 export class ModalPage implements OnInit {
     spend: ISpend[];
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
     @Input() grid?: boolean;
     @Input() list?: boolean
@@ -17,24 +18,24 @@ export class ModalPage implements OnInit {
     @Input() title?: string;
     @ViewChild('value', {read: '', static: false}) value;
     @ViewChild('retrievedItem', {read: '', static: false}) retrievedItem;
+    @ViewChild('monthValue', {read: '', static: false}) monthValue;
 
-    constructor(public modalCtrl: ModalController) {
-        this.spend = [];
+    constructor(public modalCtrl: ModalController) { 
     }   
 
-    getMonth() {
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    getCurrentMonth() {
         const date = new Date();
         const month = date.getMonth();
-        return months[month];
+        return this.months[month];
     }
 
-    getSpend() {
+    getSpend(month: any) {
+        console.log('month from get spend ', month);
+        this.spend = [];
         let results = [];
         let result;
-        let currentMonth = this.getMonth()
         let promise = new Promise((resolve, reject) => {
-            firebase.database().ref('spend').child(currentMonth).once('value').then((snapshots) => {
+            firebase.database().ref('spend').child(month).once('value').then((snapshots) => {
                 if (snapshots.val()) {
                     results.push(Object.keys(snapshots.val()));
                     result = results[0];
@@ -46,11 +47,27 @@ export class ModalPage implements OnInit {
         })
         promise.then((values: []) => {
             values.map((id: string) => (
-                firebase.database().ref('spend').child(currentMonth).child(id).once('value').then((snapshots) => {
+                firebase.database().ref('spend').child(month).child(id).once('value').then((snapshots) => {
                     this.spend.push({id: id, data: {amount: (snapshots.val().amount), date: (snapshots.val().date)}});
                     })
                 ));
         });
+    }
+
+    getCurrentMonthSpend() {
+        let currentMonth = this.getCurrentMonth()
+        this.getSpend(currentMonth);
+    }
+
+    getEnteredMonth (value: any) {
+        const date = new Date(value);
+        const month = date.getMonth();
+        return this.months[month];
+    }
+
+    monthChanged(value: any) {
+        let newMonth = this.getEnteredMonth(value);
+        this.getSpend(newMonth);
     }
 
     getValue() {
@@ -81,16 +98,17 @@ export class ModalPage implements OnInit {
         } else {
             return alert('Please enter value');
         }
-    }
-
-    onDeleteIconClick(itemId) {
-        let currentMonth = this.getMonth();
-        firebase.database().ref('spend').child(currentMonth).child(itemId).remove();
         location.reload();
     }
 
+    onDeleteIconClick(itemId) {
+        let selectedMonth = this.monthValue ? this.getEnteredMonth(this.monthValue) : this.getCurrentMonth();
+        firebase.database().ref('spend').child(selectedMonth).child(itemId).remove();
+        this.getSpend(selectedMonth);
+    }
+
     ngOnInit() {
-        this.list ? this.getSpend() : this.getValue();
+        this.list ? this.getCurrentMonthSpend() : this.getValue();
     }
 
 
