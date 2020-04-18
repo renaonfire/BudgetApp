@@ -1,23 +1,30 @@
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="medium">Add Spend</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-nav>
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-title size="medium">Add Spend</ion-title>
+      </ion-toolbar>
+    </ion-header>
+  </ion-nav>
+
   <ion-grid>
     <ion-row class="row-container">
       <ion-row>
         <div class="item">
-          <ion-icon color="tertiary" name="calendar-outline"></ion-icon>
-          <ion-label> Select Date </ion-label>
+          <div class="fields">
+            <ion-icon color="tertiary" name="calendar-outline"></ion-icon>
+            <ion-label> Select Date </ion-label>
+          </div>
           <ion-datetime [(ngModel)]="enteredDate" pickerFormat="DD MMMM YYYY" displayFormat="DD MMMM YYYY" [placeholder]="getTodaysDate()"></ion-datetime>
         </div>
       </ion-row>
       <ion-row>
         <div class="item">
-          <ion-icon color="tertiary" name="cash-outline"></ion-icon>
-          <ion-label>Enter Value</ion-label>
+          <div class="fields">
+            <ion-icon color="tertiary" name="cash-outline"></ion-icon>
+            <ion-label>Enter Value</ion-label>
+          </div>
           <ion-input [(ngModel)]="cash" placeholder="0" required={{true}} type="number" inputmode="numeric" color="tertiary" clearInput={{true}}></ion-input>
         </div>
       </ion-row>
