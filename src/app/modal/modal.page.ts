@@ -2,6 +2,7 @@ import { Component, Input, ViewChild, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import * as firebase from 'firebase';
 import { ISpend } from '../interfaces/spend.interface';
+import { MonthsService } from '../services/months.service';
 
 @Component({
     selector: 'modal-page',
@@ -10,7 +11,7 @@ import { ISpend } from '../interfaces/spend.interface';
 })
 export class ModalPage implements OnInit {
     spend: ISpend[];
-    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    months = this.monthsSrv.months;
 
     @Input() grid?: boolean;
     @Input() list?: boolean
@@ -20,7 +21,10 @@ export class ModalPage implements OnInit {
     @ViewChild('retrievedItem', {read: '', static: false}) retrievedItem;
     @ViewChild('monthValue', {read: '', static: false}) monthValue;
 
-    constructor(public modalCtrl: ModalController) { 
+    constructor(public modalCtrl: ModalController,
+                private monthsSrv: MonthsService
+        
+        ) { 
     }   
 
     getCurrentMonth() {

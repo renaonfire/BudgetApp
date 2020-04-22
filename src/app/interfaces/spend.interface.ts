@@ -5,3 +5,9 @@ export interface ISpend {
         amount?: number
     }
 }
+
+export interface ISumOfSpend {
+    spend?: number,
+    budget?: number,
+    remainder?: number
+}

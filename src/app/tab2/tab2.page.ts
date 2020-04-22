@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { ModalController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
+import { MonthsService } from '../services/months.service';
+import { Subscription } from 'rxjs';
+import { ISumOfSpend } from '../interfaces/spend.interface';
 
 
 @Component({
@@ -10,11 +13,14 @@ import { ModalPage } from '../modal/modal.page';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit{
-  spend: any = 0
-  budget: any = 0
-  remainder: any = 0
+  spend: ISumOfSpend['spend'] = 0;
+  budget: ISumOfSpend['budget'] = 0;
+  remainder: ISumOfSpend['remainder'] = 0;
+  sumOfSpendSub: Subscription;
 
-  constructor(public modalCtrl: ModalController) {}
+  constructor(public modalCtrl: ModalController,
+              private monthsSrv: MonthsService
+  ) {}
 
   async spendClicked() {
     const modal = await this.modalCtrl.create({
@@ -40,7 +46,7 @@ export class Tab2Page implements OnInit{
   }
 
   getMonth() {
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    const months = this.monthsSrv.months;
     const date = new Date();
     const month = date.getMonth();
     return months[month];
@@ -93,6 +99,12 @@ export class Tab2Page implements OnInit{
   }
 
   ngOnInit() {
+    // this.sumOfSpendSub = this.spendSrv.sumChanged.subscribe(data => {
+    //   this.spend.spend = data.spend;
+    //   this.spend.remainder = data.remainder;
+    //   this.spend.budget = data.budget});
+    // this.spendSrv.getSumOfSpend(this.getMonth());
+    
     this.getSumOfSpend();
     this.getBudget();
   }

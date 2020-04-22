@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
 import * as firebase from 'firebase';
+import { MonthsService } from '../services/months.service';
+import { ISumOfSpend } from '../interfaces/spend.interface';
 
 @Component({
   selector: 'app-tab3',
@@ -10,9 +12,11 @@ import * as firebase from 'firebase';
 })
 export class Tab3Page implements OnInit {
 
-  budget: number = 0;
+  budget: ISumOfSpend["budget"] = 0;
 
-  constructor(public modalCtrl: ModalController) {}
+  constructor(public modalCtrl: ModalController,
+              private monthsSrv: MonthsService
+    ) {}
 
   async budgetClicked() {
     const modal = await this.modalCtrl.create({
@@ -27,7 +31,7 @@ export class Tab3Page implements OnInit {
   }
 
   getMonth() {
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    const months = this.monthsSrv.months;
     const date = new Date();
     const month = date.getMonth();
     return months[month];
