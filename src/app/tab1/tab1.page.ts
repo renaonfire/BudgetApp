@@ -1,6 +1,9 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
+import { MonthsService } from '../services/months.service';
+import { SpendService } from '../services/spend.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -14,8 +17,11 @@ export class Tab1Page {
   @ViewChild('cash', {read: '', static: false}) cash;
   @ViewChild('enteredDate', {read: '', static: false}) enteredDate;
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router,
+              private monthsSrv: MonthsService,
+              private spendSrv: SpendService,
+              private alertCtrl: AlertController
+  ) {}
 
   getTodaysDate(): string {
     const date = new Date();
@@ -34,24 +40,31 @@ export class Tab1Page {
   }
 
   getMonth() {
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    const months = this.monthsSrv.months
     const date = new Date(this.getEnteredDate());
     const month = date.getMonth();
     return months[month];
   }
 
   onAdd() {
-    let selectedMonth = this.getMonth();
-    const spend = {
-      date:  new Intl.DateTimeFormat('en-GB').format(this.enteredDate),
-      amount: this.cash
-    };
     if (this.cash) {
-      let newKey = firebase.database().ref('spend').child(selectedMonth).push().key;
-      firebase.database().ref('spend').child(selectedMonth).child(newKey).set(spend);
+      this.spendSrv.addSpend(this.getMonth(), this.getEnteredDate(), this.cash);
+      this.router.navigate(['tabs/tab2']);
     } else {
-      return alert('Please enter value');
+      this.alertCtrl
+      .create({
+        header: 'No Value Entered',
+        message: 'Please Enter an Amount',
+        buttons: [
+          {
+            text: 'Okay',
+            role: 'cancel'
+          }
+        ]
+      })
+      .then(alertEl => {
+        alertEl.present();
+      });
     }
-    this.router.navigate(['tabs/tab2']);
   }
 }
