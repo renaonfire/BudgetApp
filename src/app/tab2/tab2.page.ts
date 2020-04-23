@@ -58,7 +58,6 @@ export class Tab2Page implements OnInit{
   }
 
   ngOnInit() {
-    // TODO add when service working
     this.budgetSub = this.spendSrv.budgetChanged.subscribe(budget => {
       this.budget = budget
     });

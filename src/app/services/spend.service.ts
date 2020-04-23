@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 
 export class SpendService {
 
-    spendInt: ISpend;
+    spendInt: ISpend[];
     data: ISumOfSpend;
     spend: ISumOfSpend['spend'];
     budget: ISumOfSpend['budget'];
@@ -18,6 +18,7 @@ export class SpendService {
     budgetChanged = new Subject<ISumOfSpend['budget']>();
     sumChanged = new Subject<ISumOfSpend['spend']>();
     remainderChanged = new Subject<ISumOfSpend['remainder']>();
+    spendListUpdated = new Subject<ISpend[]>();
     spendRef = firebase.database().ref('spend');
     budgetRef = firebase.database().ref('budget');
 
@@ -25,17 +26,17 @@ export class SpendService {
 
 
     addSpend(month: any, date: any, value: any) {
-        this.spendInt = {
+        this.spendInt = [{
             id: this.spendRef.child(month).push().key,
             data: {
                 date:  new Intl.DateTimeFormat('en-GB').format(date),
                 amount: value
             }
-        };
-        this.spendRef.child(month).child(this.spendInt.id).set(this.spendInt.data);
+        }];
+        console.log(this.spendInt);
+        this.spendRef.child(month).child(this.spendInt[0].id).set(this.spendInt[0].data);
     }
 
-    // TODO
     getSumOfSpend(month: any) {
         let results = [];
         let result;
@@ -78,5 +79,35 @@ export class SpendService {
                 this.budgetChanged.next(this.budget);
             });
         })
+    }
+
+    addBudget(value: any) {
+        this.budgetRef.set(value);
+        this.budgetChanged.next(value);
+    }
+
+    getSpendList(month: any) {
+        this.spendInt = [];
+        let results = [];
+        let result;
+        let promise = new Promise((resolve, reject) => {
+            this.spendRef.child(month).once('value').then((snapshots) => {
+                if (snapshots.val()) {
+                    results.push(Object.keys(snapshots.val()));
+                    result = results[0];
+                    resolve(result);
+                } else {
+                    reject();
+                }
+                });
+        })
+        promise.then((values: []) => {
+            values.map((id: string) => (
+                this.spendRef.child(month).child(id).once('value').then((snapshots) => {
+                    this.spendInt.push({id: id, data: {amount: (snapshots.val().amount), date: (snapshots.val().date)}});
+                    this.spendListUpdated.next(this.spendInt)
+                    })
+                ));
+        });
     }
 }

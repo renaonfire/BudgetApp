@@ -4,6 +4,8 @@ import { ModalPage } from '../modal/modal.page';
 import * as firebase from 'firebase';
 import { MonthsService } from '../services/months.service';
 import { ISumOfSpend } from '../interfaces/spend.interface';
+import { Subscription } from 'rxjs';
+import { SpendService } from '../services/spend.service';
 
 @Component({
   selector: 'app-tab3',
@@ -13,9 +15,11 @@ import { ISumOfSpend } from '../interfaces/spend.interface';
 export class Tab3Page implements OnInit {
 
   budget: ISumOfSpend["budget"] = 0;
+  budgetSub = new Subscription;
 
   constructor(public modalCtrl: ModalController,
-              private monthsSrv: MonthsService
+              private monthsSrv: MonthsService,
+              private spendSrv: SpendService
     ) {}
 
   async budgetClicked() {
@@ -35,16 +39,7 @@ export class Tab3Page implements OnInit {
 }
 
   getBudget() {
-    return new Promise((resolve, reject) => {
-      firebase.database().ref('budget').once('value').then((snapshots) => {
-          if (snapshots.val()) {
-              this.budget = (snapshots.val());
-              resolve(this.budget);
-          } else {
-              this.budget = 0;
-          }
-      });
-  })
+    return this.spendSrv.getBudget();
 }
 
   ionViewWillEnter() {
@@ -53,6 +48,9 @@ export class Tab3Page implements OnInit {
   
   ngOnInit() {
     this.getBudget();
+    this.budgetSub = this.spendSrv.budgetChanged.subscribe(budget => {
+      this.budget = budget;
+    })
   }
 
 }
