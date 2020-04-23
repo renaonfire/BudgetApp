@@ -5,6 +5,7 @@ import { ModalPage } from '../modal/modal.page';
 import { MonthsService } from '../services/months.service';
 import { Subscription } from 'rxjs';
 import { ISumOfSpend } from '../interfaces/spend.interface';
+import { SpendService } from '../services/spend.service';
 
 
 @Component({
@@ -17,9 +18,12 @@ export class Tab2Page implements OnInit{
   budget: ISumOfSpend['budget'] = 0;
   remainder: ISumOfSpend['remainder'] = 0;
   sumOfSpendSub: Subscription;
+  budgetSub: Subscription;
+  remainderSub: Subscription;
 
   constructor(public modalCtrl: ModalController,
-              private monthsSrv: MonthsService
+              private monthsSrv: MonthsService,
+              private spendSrv: SpendService
   ) {}
 
   async spendClicked() {
@@ -49,64 +53,23 @@ export class Tab2Page implements OnInit{
     return this.monthsSrv.getMonth();
   }
 
-  // TODO add to service 
-  getSumOfSpend() {
-    let results = [];
-    let result;
-    let value = [];
-    let sum;
-    let currentMonth = this.getMonth();
-    let promise = new Promise((resolve, reject) => {
-        firebase.database().ref('spend').child(currentMonth).once('value').then((snapshots) => {
-          if (snapshots.val()) {
-            results.push(Object.keys(snapshots.val()));
-            result = results[0];
-            resolve(result);
-          } else {
-            this.spend = 0;
-          }
-        });
-    })
-    promise.then((values: []) => {
-        values.map((id: string) => (
-            firebase.database().ref('spend').child(currentMonth).child(id).once('value').then((snapshots) => {
-                value.push(snapshots.val().amount) as number;
-                sum = value.reduce((a, b) => a + b) as number;
-                this.spend = sum;
-                this.remainder = this.budget - this.spend;
-                })
-            ));
-    });
-}
-
-  // TODO add to service
-  getBudget() {
-    return new Promise((resolve, reject) => {
-      firebase.database().ref('budget').once('value').then((snapshots) => {
-          if (snapshots.val()) {
-              this.budget = (snapshots.val());
-              resolve([this.budget, this.remainder]);
-          } else {
-              this.budget = 0;
-          }
-      });
-  })
-  }
-
   ionViewWillEnter() {
     this.ngOnInit();
   }
 
   ngOnInit() {
     // TODO add when service working
-    // this.sumOfSpendSub = this.spendSrv.sumChanged.subscribe(data => {
-    //   this.spend.spend = data.spend;
-    //   this.spend.remainder = data.remainder;
-    //   this.spend.budget = data.budget});
-    // this.spendSrv.getSumOfSpend(this.getMonth());
-    
-    this.getSumOfSpend();
-    this.getBudget();
+    this.budgetSub = this.spendSrv.budgetChanged.subscribe(budget => {
+      this.budget = budget
+    });
+    this.sumOfSpendSub = this.spendSrv.sumChanged.subscribe(spend => {
+      this.spend = spend;
+    });
+    this.remainderSub = this.spendSrv.remainderChanged.subscribe(remainder => {
+      this.remainder = remainder;
+    })
+    this.spendSrv.getBudget();
+    this.spendSrv.getSumOfSpend(this.getMonth());
   }
 
 }
