@@ -9,4 +9,16 @@ export class MonthsService {
   
 
   constructor() { }
+
+  getMonth() {
+    const date = new Date();
+    const month = date.getMonth();
+    return this.months[month];
+  }
+
+  getEnteredMonth (value: any) {
+    const date = new Date(value);
+    const month = date.getMonth();
+    return this.months[month];
+}
 }

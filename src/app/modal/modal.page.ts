@@ -28,11 +28,10 @@ export class ModalPage implements OnInit {
     }   
 
     getCurrentMonth() {
-        const date = new Date();
-        const month = date.getMonth();
-        return this.months[month];
+        return this.monthsSrv.getMonth();
     }
 
+    // TODO add to service
     getSpend(month: any) {
         console.log('month from get spend ', month);
         this.spend = [];
@@ -64,16 +63,18 @@ export class ModalPage implements OnInit {
     }
 
     getEnteredMonth (value: any) {
-        const date = new Date(value);
-        const month = date.getMonth();
-        return this.months[month];
+        return this.monthsSrv.getEnteredMonth(value);
     }
 
     monthChanged(value: any) {
-        let newMonth = this.getEnteredMonth(value);
-        this.getSpend(newMonth);
+        setTimeout(() => {
+            console.log('month changed ran ');
+            let newMonth = this.getEnteredMonth(value);
+            this.getSpend(newMonth);
+        }, 0);
     }
 
+    // TODO add to service
     getValue() {
         return new Promise((resolve, reject) => {
             firebase.database().ref('budget').once('value').then((snapshots) => {
@@ -93,6 +94,7 @@ export class ModalPage implements OnInit {
         });
     }
 
+    // TODO rename func
     dismiss() {
         if (this.value) {
             firebase.database().ref('budget').set(this.value);
@@ -100,11 +102,13 @@ export class ModalPage implements OnInit {
                 'dismissed': true
             });
         } else {
+            // TODO add native alert
             return alert('Please enter value');
         }
         location.reload();
     }
 
+    // TODO add to service
     onDeleteIconClick(itemId) {
         let selectedMonth = this.monthValue ? this.getEnteredMonth(this.monthValue) : this.getCurrentMonth();
         firebase.database().ref('spend').child(selectedMonth).child(itemId).remove();

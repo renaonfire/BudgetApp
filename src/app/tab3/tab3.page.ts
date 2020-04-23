@@ -31,10 +31,7 @@ export class Tab3Page implements OnInit {
   }
 
   getMonth() {
-    const months = this.monthsSrv.months;
-    const date = new Date();
-    const month = date.getMonth();
-    return months[month];
+    return this.monthsSrv.getMonth();
 }
 
   getBudget() {

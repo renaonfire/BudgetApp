@@ -46,12 +46,10 @@ export class Tab2Page implements OnInit{
   }
 
   getMonth() {
-    const months = this.monthsSrv.months;
-    const date = new Date();
-    const month = date.getMonth();
-    return months[month];
+    return this.monthsSrv.getMonth();
   }
 
+  // TODO add to service 
   getSumOfSpend() {
     let results = [];
     let result;
@@ -81,6 +79,7 @@ export class Tab2Page implements OnInit{
     });
 }
 
+  // TODO add to service
   getBudget() {
     return new Promise((resolve, reject) => {
       firebase.database().ref('budget').once('value').then((snapshots) => {
@@ -99,6 +98,7 @@ export class Tab2Page implements OnInit{
   }
 
   ngOnInit() {
+    // TODO add when service working
     // this.sumOfSpendSub = this.spendSrv.sumChanged.subscribe(data => {
     //   this.spend.spend = data.spend;
     //   this.spend.remainder = data.remainder;

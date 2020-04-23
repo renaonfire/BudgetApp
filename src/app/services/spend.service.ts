@@ -28,6 +28,7 @@ export class SpendService {
         firebase.database().ref('spend').child(month).child(this.spendInt.id).set(this.spendInt.data);
     }
 
+    // TODO
     getSumOfSpend(month: any) {
         let results = [];
         let result;
