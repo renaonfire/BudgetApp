@@ -44,6 +44,13 @@ export class Tab3Page implements OnInit {
 
   ionViewWillEnter() {
     this.ngOnInit();
+    console.log('will enter');
+    
+  }
+
+  ionViewDidEnter() {
+    console.log('did enter');
+    
   }
   
   ngOnInit() {
@@ -53,4 +60,5 @@ export class Tab3Page implements OnInit {
     })
   }
 
+   // TODO add NgOnDestroy
 }

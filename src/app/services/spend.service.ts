@@ -37,6 +37,7 @@ export class SpendService {
         this.spendRef.child(month).child(this.spendInt[0].id).set(this.spendInt[0].data);
     }
 
+    //TODO Add error handling and if null
     getSumOfSpend(month: any) {
         let results = [];
         let result;
@@ -50,6 +51,7 @@ export class SpendService {
                     resolve(result);
                 } else {
                     this.spend = 0;
+                    reject();
                 }
             });
         })
@@ -75,6 +77,7 @@ export class SpendService {
                     resolve([this.budget]);
                 } else {
                     this.budget = 0
+                    reject();
                 }
                 this.budgetChanged.next(this.budget);
             });

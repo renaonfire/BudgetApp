@@ -71,4 +71,6 @@ export class Tab2Page implements OnInit{
     this.spendSrv.getSumOfSpend(this.getMonth());
   }
 
+  // TODO add NgOnDestroy
+
 }

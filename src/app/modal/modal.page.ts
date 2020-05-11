@@ -1,10 +1,10 @@
 import { Component, Input, ViewChild, OnInit } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import * as firebase from 'firebase';
-import { ISpend } from '../interfaces/spend.interface';
+import { ISpend, ISumOfSpend } from '../interfaces/spend.interface';
 import { MonthsService } from '../services/months.service';
 import { SpendService } from '../services/spend.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 
 @Component({
     selector: 'modal-page',
@@ -37,7 +37,7 @@ export class ModalPage implements OnInit {
         return this.monthsSrv.getMonth();
     }
 
-    // TODO add error handling
+    // TODO add error handling and empty label
     getCurrentMonthSpend() {
         let currentMonth = this.getCurrentMonth();
         this.spendSrv.getSpendList(currentMonth);
@@ -106,6 +106,6 @@ export class ModalPage implements OnInit {
         })
     }
 
-
+    // TODO add NgOnDestroy
 
 }
