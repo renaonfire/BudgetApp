@@ -13,7 +13,10 @@
       <ion-card-title>Current Budget</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      Budget: <span class="value">£{{ budget }}</span>
+      Budget: <span *ngIf="!isLoading" class="value">{{ budget | currency}}</span>
+      <span *ngIf="isLoading" class="ion-text-center ion-padding">
+        <ion-spinner color="primary"></ion-spinner>
+      </span>
     </ion-card-content>
   </ion-card>
 </ion-content>

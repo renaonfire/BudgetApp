@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as firebase from 'firebase';
-import { ModalController } from '@ionic/angular';
+import { ModalController, LoadingController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
 import { MonthsService } from '../services/months.service';
 import { Subscription } from 'rxjs';
@@ -20,33 +19,37 @@ export class Tab2Page implements OnInit{
   sumOfSpendSub: Subscription;
   budgetSub: Subscription;
   remainderSub: Subscription;
+  isLoading = true;
 
   constructor(public modalCtrl: ModalController,
               private monthsSrv: MonthsService,
-              private spendSrv: SpendService
+              private spendSrv: SpendService,
+              private loadingCtrl: LoadingController
   ) {}
 
-  async spendClicked() {
-    const modal = await this.modalCtrl.create({
-      component: ModalPage,
-      componentProps: {
-        'list': true,
-        'title': 'Spend Summary'
-      }
-    });
-    return await modal.present();
+  spendClicked() {
+      this.modalCtrl.create({
+        component: ModalPage,
+        componentProps: {
+          'list': true,
+          'title': 'Spend Summary'
+        }
+      }).then(modalEl => {
+        modalEl.present();
+      })
   }
 
-  async budgetClicked() {
-    const modal = await this.modalCtrl.create({
+  budgetClicked() {
+    this.modalCtrl.create({
       component: ModalPage,
       componentProps: {
         'grid': true,
         'label': 'Set Budget',
         'title': 'Budget'
       }
-    });
-    return await modal.present();
+    }).then(modalEl => {
+      modalEl.present();
+    })
   }
 
   getMonth() {
@@ -60,12 +63,15 @@ export class Tab2Page implements OnInit{
   ngOnInit() {
     this.budgetSub = this.spendSrv.budgetChanged.subscribe(budget => {
       this.budget = budget
+      this.isLoading = false;
     });
     this.sumOfSpendSub = this.spendSrv.sumChanged.subscribe(spend => {
       this.spend = spend;
+      this.isLoading = false;
     });
     this.remainderSub = this.spendSrv.remainderChanged.subscribe(remainder => {
       this.remainder = remainder;
+      this.isLoading = false;
     })
     this.spendSrv.getBudget();
     this.spendSrv.getSumOfSpend(this.getMonth());

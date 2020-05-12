@@ -31,16 +31,23 @@
             <ion-label> Select Month </ion-label>
             <ion-datetime (ionChange)="monthChanged(monthValue)" [(ngModel)]="monthValue" pickerFormat="MMMM YYYY" displayFormat="MMMM YYYY" [placeholder]="getCurrentMonth()"></ion-datetime>
         </div>
-        <ion-item-sliding *ngFor="let sp of spend">
-            <ion-item id="list-item">
-                    <ion-label> {{ sp.data.date }}</ion-label>
-                    <span class="value">£{{ sp.data.amount }}</span>
-            </ion-item>
-            <ion-item-options side="end">
-                <ion-item-option color="danger">
-                <ion-icon (click)="onDeleteIconClick(sp.id)" slot="icon-only" name="trash"></ion-icon>
-                </ion-item-option>
-            </ion-item-options>
-        </ion-item-sliding>
+        <div *ngIf="!isLoading">
+            <ion-item-sliding *ngFor="let sp of spend">
+                <ion-item id="list-item">
+                        <ion-label> {{ sp.data.date }}</ion-label>
+                        <span class="value">£{{ sp.data.amount }}</span>
+                </ion-item>
+                <ion-item-options side="end">
+                    <ion-item-option color="danger">
+                    <ion-icon (click)="onDeleteIconClick(sp.id)" slot="icon-only" name="trash"></ion-icon>
+                    </ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+        </div>
+        <div *ngIf="isLoading">
+            <div *ngIf="isLoading" class="ion-text-center ion-padding">
+                <ion-spinner color="primary"></ion-spinner>
+            </div>
+        </div>
     </ng-template>
 </ion-content>

@@ -1,6 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import * as firebase from 'firebase';
 import { MonthsService } from '../services/months.service';
 import { SpendService } from '../services/spend.service';
 import { AlertController } from '@ionic/angular';

@@ -16,6 +16,7 @@ export class Tab3Page implements OnInit {
 
   budget: ISumOfSpend["budget"] = 0;
   budgetSub = new Subscription;
+  isLoading = true;
 
   constructor(public modalCtrl: ModalController,
               private monthsSrv: MonthsService,
@@ -44,19 +45,13 @@ export class Tab3Page implements OnInit {
 
   ionViewWillEnter() {
     this.ngOnInit();
-    console.log('will enter');
-    
-  }
-
-  ionViewDidEnter() {
-    console.log('did enter');
-    
   }
   
   ngOnInit() {
     this.getBudget();
     this.budgetSub = this.spendSrv.budgetChanged.subscribe(budget => {
       this.budget = budget;
+      this.isLoading = false;
     })
   }
 

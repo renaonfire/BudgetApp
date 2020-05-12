@@ -1,10 +1,10 @@
 import { Component, Input, ViewChild, OnInit } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import * as firebase from 'firebase';
-import { ISpend, ISumOfSpend } from '../interfaces/spend.interface';
+import { ISpend } from '../interfaces/spend.interface';
 import { MonthsService } from '../services/months.service';
 import { SpendService } from '../services/spend.service';
-import { Subscription, Subject } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'modal-page',
@@ -16,6 +16,7 @@ export class ModalPage implements OnInit {
     months = this.monthsSrv.months;
     spendListSub = new Subscription;
     budgetSub = new Subscription;
+    isLoading = true;
 
     @Input() grid?: boolean;
     @Input() list?: boolean
@@ -67,9 +68,8 @@ export class ModalPage implements OnInit {
 
     onSaveBudget() {
         if (this.value) {
-            this.spendSrv.addBudget(this.value);
             this.modalCtrl.dismiss({
-                'dismissed': true
+                budget: this.spendSrv.addBudget(this.value)
             });
         } else {
             this.alertCtrl
@@ -100,6 +100,7 @@ export class ModalPage implements OnInit {
         this.list ? this.getCurrentMonthSpend() : this.getBudget();
         this.spendListSub = this.spendSrv.spendListUpdated.subscribe(spend => {
             this.spend = spend;
+            this.isLoading = false;
         })
         this.budgetSub = this.spendSrv.budgetChanged.subscribe(budget => {
             this.value = budget;
