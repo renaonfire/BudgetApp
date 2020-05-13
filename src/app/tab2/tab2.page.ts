@@ -31,7 +31,8 @@ export class Tab2Page implements OnInit{
         component: ModalPage,
         componentProps: {
           'list': true,
-          'title': 'Spend Summary'
+          'title': 'Spend Summary',
+          'label': 'Select Month'
         }
       }).then(modalEl => {
         modalEl.present();
