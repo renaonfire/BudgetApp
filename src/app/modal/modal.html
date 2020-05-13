@@ -1,12 +1,13 @@
+
+    <ion-header>
+        <ion-toolbar>
+            <ion-title size="medium">{{ title }}</ion-title>
+            <ion-icon (click)="closeModal()" slot="end" name="close-circle"></ion-icon>
+        </ion-toolbar>
+    </ion-header>
+
+
 <ion-content [fullscreen]="true">
-    <ion-nav>
-        <ion-header collapse="condense">
-            <ion-toolbar>
-                <ion-title size="medium">{{ title }}</ion-title>
-                <ion-icon (click)="closeModal()" slot="end" name="close-circle"></ion-icon>
-            </ion-toolbar>
-        </ion-header>
-    </ion-nav>
 
     <ng-template [ngIf]="grid">
         <ion-grid>

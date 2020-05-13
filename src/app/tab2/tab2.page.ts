@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
 import { MonthsService } from '../services/months.service';
 import { Subscription } from 'rxjs';
@@ -23,8 +23,7 @@ export class Tab2Page implements OnInit{
 
   constructor(public modalCtrl: ModalController,
               private monthsSrv: MonthsService,
-              private spendSrv: SpendService,
-              private loadingCtrl: LoadingController
+              private spendSrv: SpendService
   ) {}
 
   spendClicked() {

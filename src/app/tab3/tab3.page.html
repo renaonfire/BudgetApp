@@ -1,16 +1,17 @@
 
-<ion-content [fullscreen]="true">
-  <ion-nav>
-    <ion-header collapse="condense">
+
+    <ion-header>
       <ion-toolbar>
         <ion-title size="medium">Settings</ion-title>
       </ion-toolbar>
     </ion-header>
-  </ion-nav>
+
+
+  <ion-content>
   <ion-card (click)="budgetClicked()">
     <ion-card-header>
-      <ion-card-subtitle>Set Budget</ion-card-subtitle>
-      <ion-card-title>Current Budget</ion-card-title>
+      <ion-card-subtitle color="secondary">Set Budget</ion-card-subtitle>
+      <ion-card-title color="primary">Current Budget</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       Budget: <span *ngIf="!isLoading" class="value">{{ budget | currency}}</span>

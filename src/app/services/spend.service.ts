@@ -22,7 +22,8 @@ export class SpendService {
     spendRef = firebase.database().ref('spend');
     budgetRef = firebase.database().ref('budget');
 
-    constructor() { }
+    constructor(
+    ) { }
 
 
     addSpend(month: any, date: any, value: any) {
@@ -68,6 +69,7 @@ export class SpendService {
                 ));
         });
     }
+
 
     getBudget() {
         return new Promise((resolve, reject) => {
